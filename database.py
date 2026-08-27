@@ -1,8 +1,10 @@
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.orm import sessionmaker, declarative_base
+from dotenv import load_dotenv
+import os
 
-# Put your MySQL password where YOUR_PASSWORD is
-DATABASE_URL = "mysql+pymysql://root:YOUR_PASSWORD@localhost/new_schema"
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 
@@ -30,3 +32,5 @@ def get_db():
         yield db
     finally:
         db.close()
+
+Base.metadata.create_all(bind=engine)
